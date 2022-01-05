@@ -6,81 +6,79 @@ function getCityFromURL(search) {
   // 1. Extract the city id from the URL's Query Param and return it
   let parameter=new URLSearchParams(search);
   return parameter.get('city');
-
 }
 
 //Implementation of fetch call with a paramterized input based on city
 async function fetchAdventures(city) {
   // TODO: MODULE_ADVENTURES
-  // 1. Fetch adventures using the Backend API and return the data
   try{
-    let apiDATA = await fetch(`${config.backendEndpoint}/adventures?city=${city}`).then(response=>response.json());
-    return apiDATA;
-    }catch(err){
-       console.log(err,"Error in fetchAdventures()");
-       return null;
-    }
-
+  // 1. Fetch adventures using the Backend API and return the data
+  let apiDATA = await fetch(`${config.backendEndpoint}/adventures?city=${city}`).then(response=>response.json());
+  return apiDATA;
+  }catch(err){
+     console.log(err,"Error in fetchAdventures()");
+     return null;
+  }
 }
 
 //Implementation of DOM manipulation to add adventures for the given city from list of adventures
 function addAdventureToDOM(adventures) {
   // TODO: MODULE_ADVENTURES
   // 1. Populate the Adventure Cards and insert those details into the DOM
-  let advArray=Array.from(adventures);
 
-  advArray.forEach(element => {
-  let rowDiv=document.getElementById("data");
+    let advArray=Array.from(adventures);
 
-  let colDiv=document.createElement("div");
-  colDiv.setAttribute("class","col-6 col-lg-3 adventure-card");
-  rowDiv.appendChild(colDiv);
+    advArray.forEach(element => {
+    let rowDiv=document.getElementById("data");
 
-  let aTag=document.createElement("a");
-  aTag.setAttribute("href",`detail/?adventure=${element.id}`);
-  aTag.setAttribute("id",`${element.id}`);
-  colDiv.appendChild(aTag);
+    let colDiv=document.createElement("div");
+    colDiv.setAttribute("class","col-6 col-lg-3 adventure-card");
+    rowDiv.appendChild(colDiv);
+  
+    let aTag=document.createElement("a");
+    aTag.setAttribute("href",`detail/?adventure=${element.id}`);
+    aTag.setAttribute("id",`${element.id}`);
+    colDiv.appendChild(aTag);
 
-  let imgTag=document.createElement("img");
-  imgTag.setAttribute("src",`${element.image}`);
-  imgTag.setAttribute("alt",`...`);
-  aTag.appendChild(imgTag);
+    let imgTag=document.createElement("img");
+    imgTag.setAttribute("src",`${element.image}`);
+    imgTag.setAttribute("alt",`...`);
+    aTag.appendChild(imgTag);
+  
+    let cardDiv=document.createElement("div");
+    cardDiv.setAttribute("class","adventure-card-text");
+    aTag.appendChild(cardDiv);
 
-  let cardDiv=document.createElement("div");
-  cardDiv.setAttribute("class","adventure-card-text");
-  aTag.appendChild(cardDiv);
+    let catDiv=document.createElement("div");
+    catDiv.setAttribute("id","catDivBox");
+    aTag.appendChild(catDiv);
 
-  let catDiv=document.createElement("div");
-  catDiv.setAttribute("id","catDivBox");
-  aTag.appendChild(catDiv);
+    catDiv.innerHTML=`<h5>${element.category}</h5>`
+  
+    let advTxtRow=document.createElement("div");
+    advTxtRow.setAttribute("class","row")
+    cardDiv.appendChild(advTxtRow);
 
-  catDiv.innerHTML=`<h5>${element.category}</h5>`
+    let leftCard=document.createElement("div");
+    leftCard.setAttribute("class","left-txt col-7");
+    leftCard.innerHTML=`${element.name}`;
+    advTxtRow.appendChild(leftCard);
+  
+    let rightCard=document.createElement("div");
+    rightCard.setAttribute("class","right-txt col-5");
+    rightCard.innerHTML=`&#8377; ${element.costPerHead}`;
+    advTxtRow.appendChild(rightCard);
 
-  let advTxtRow=document.createElement("div");
-  advTxtRow.setAttribute("class","row")
-  cardDiv.appendChild(advTxtRow);
-
-  let leftCard=document.createElement("div");
-  leftCard.setAttribute("class","left-txt col-7");
-  leftCard.innerHTML=`${element.name}`;
-  advTxtRow.appendChild(leftCard);
-
-  let rightCard=document.createElement("div");
-  rightCard.setAttribute("class","right-txt col-5");
-  rightCard.innerHTML=`&#8377; ${element.costPerHead}`;
-  advTxtRow.appendChild(rightCard);
-
-  let leftCardBot=document.createElement("div");
-  leftCardBot.setAttribute("class","left-txt col-7");
-  leftCardBot.innerHTML=`Duration`;
-  advTxtRow.appendChild(leftCardBot);
-
-  let rightCardBot=document.createElement("div");
-  rightCardBot.setAttribute("class","right-txt col-5");
-  rightCardBot.innerHTML=`${element.duration} Hours`;
-  advTxtRow.appendChild(rightCardBot);
-});
-
+    let leftCardBot=document.createElement("div");
+    leftCardBot.setAttribute("class","left-txt col-7");
+    leftCardBot.innerHTML=`Duration`;
+    advTxtRow.appendChild(leftCardBot);
+  
+    let rightCardBot=document.createElement("div");
+    rightCardBot.setAttribute("class","right-txt col-5");
+    rightCardBot.innerHTML=`${element.duration} Hours`;
+    advTxtRow.appendChild(rightCardBot);
+  });
 
 }
 
@@ -88,18 +86,19 @@ function addAdventureToDOM(adventures) {
 function filterByDuration(list, low, high) {
   // TODO: MODULE_FILTERS
   // 1. Filter adventures based on Duration and return filtered list
+
   let filterAdv=list.filter((element)=>{
     return element.duration>=low&&element.duration<=high;
   }) ;
 
   return filterAdv;
-
 }
 
 //Implementation of filtering by category which takes in a list of adventures, list of categories to be filtered upon and returns a filtered list of adventures.
 function filterByCategory(list, categoryList) {
   // TODO: MODULE_FILTERS
   // 1. Filter adventures based on their Category and return filtered list
+  
   let filterAdv=list.filter((element)=>{
     for(let i=0;i<categoryList.length;i++){
       if(element.category==categoryList[i]){
@@ -109,7 +108,6 @@ function filterByCategory(list, categoryList) {
   }) ;
 
   return filterAdv;
-
 }
 
 // filters object looks like this filters = { duration: "", category: [] };
@@ -124,8 +122,6 @@ function filterFunction(list, filters) {
   // 1. Handle the 3 cases detailed in the comments above and return the filtered list of adventures
   // 2. Depending on which filters are needed, invoke the filterByDuration() and/or filterByCategory() methods
 
-
-  // Place holder for functionality to work in the Stubs
   if((filters.category[0]===undefined)&&(filters.duration==="")){
     return list;
   } else if((filters.category[0]!==undefined)&&(filters.duration!=="")){
@@ -155,7 +151,7 @@ function filterFunction(list, filters) {
 //Implementation of localStorage API to save filters to local storage. This should get called everytime an onChange() happens in either of filter dropdowns
 function saveFiltersToLocalStorage(filters) {
   // TODO: MODULE_FILTERS
-  // 1. Store the filters as a String to localStorage
+  // 1. Store the filters to localStorage using JSON.stringify()
   window.localStorage.setItem("filters",JSON.stringify(filters));
   return true;
 }
@@ -163,12 +159,10 @@ function saveFiltersToLocalStorage(filters) {
 //Implementation of localStorage API to get filters from local storage. This should get called whenever the DOM is loaded.
 function getFiltersFromLocalStorage() {
   // TODO: MODULE_FILTERS
-  // 1. Get the filters from localStorage and return String read as an object
+  // 1. Get the filters from localStorage and return in JSON format
+
   let filters=JSON.parse(window.localStorage.getItem("filters"))
   return filters;
-
-
-  // Place holder for functionality to work in the Stubs
 }
 
 //Implementation of DOM manipulation to add the following filters to DOM :
@@ -177,7 +171,7 @@ function getFiltersFromLocalStorage() {
 
 function generateFilterPillsAndUpdateDOM(filters) {
   // TODO: MODULE_FILTERS
-  // 1. Use the filters given as input, update the Duration Filter value and Generate Category Pills
+  // 1. Use the filters given as input, update the Duration Filter and Generate Category Pills
   filters.category.forEach(element=>{
     let catListDiv=document.getElementById("category-list");
 
