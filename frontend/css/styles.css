@@ -71,17 +71,11 @@ footer {
 }
 
 .tile-text {
-  /* css from qtrip-static */
+  position: absolute;
   z-index: 1;
-  color: white;
   text-transform: uppercase;
   letter-spacing: 2px;
-  position: absolute;
-  left: 50%;
-  bottom: 10% ;
-  transform: translateX(-50%);
 }
-
 .hero-image {
   /* Use "linear-gradient" to add a darken background effect to the image (photographer.jpg). This will make the text easier to read */
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
